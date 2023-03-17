@@ -28,9 +28,9 @@ globals:
 
 onInstall:
 - updateCurl
-- setupFail2ban
 
-onUninstall: removeCurl
+onUninstall:
+- removeCurl
 
 actions:
   updateCurl:
