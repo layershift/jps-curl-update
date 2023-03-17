@@ -1,0 +1,48 @@
+name: myCurl
+version: 0.1
+type: update
+jpsVersion: '0.1'
+
+categories:
+- apps/others
+- apps/management-and-monitoring
+description: This is
+  curl version 7.88.1
+  Lorem ipsupersum
+
+homepage: http://www.layershift.com
+logo: "${baseUrl}/images/curl.png"
+baseUrl: https://raw.githubusercontent.com/layershift/jps-curl-update/master/
+
+targetNodes:
+  nodeType:
+  - nginx-ruby
+  - nginx
+  - nginx-dockerized
+  - nginxphp-dockerized
+
+globals:
+  installScript: "${baseUrl}/scripts/install.sh"
+  removeScript: "${baseUrl}/scripts/remove.sh"
+  documentationLink: http://layershift.com
+
+onInstall:
+- updateCurl
+- setupFail2ban
+
+onUninstall: removeCurl
+
+actions:
+  updateCurl:
+    cmd [${targetNodes.nodeGroup}]:
+    - curl -sSfL "${globals.installScript}" -o ${SERVER_SCRIPTS}/install.sh 2>&1
+    - "/bin/bash ${SERVER_SCRIPTS}/install.sh"
+    user: root
+  removeCurl:
+    cmd [${targetNodes.nodeGroup}]:
+    - echo "to be coded"
+    user: root
+
+success: Addon was successufully installed with default Jelastic configuration. If
+  you desire to set custom behaviour for your environment - please please refer to
+  [documentation](${globals.documentationLink})
