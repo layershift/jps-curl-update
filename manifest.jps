@@ -1,7 +1,7 @@
 name: jps-curl-update
-version: 0.1.2
+version: 0.1.3
 type: update
-jpsVersion: '0.1.2'
+jpsVersion: '0.1.3'
 
 categories:
 - apps/others
@@ -21,12 +21,20 @@ globals:
 onInstall:
 - updateCurl
 
+onAfterRedeployContainer:
+- updateCurl
+
+onAfterAddNode:
+- updateCurl
+
+onAfterCloneNodes:
+- updateCurl
+
 actions:
   updateCurl:
   - forEach(node:targetNodes):
     - cmd [${@node.id}]:
         - echo -e "\n\nOn node ${@node.id}";
-        - touch /root/test123zy;
         - which rpm 2>/dev/null >/dev/null; if [ $? -gt 0 ]; then echo -e "Issue:\nrpm not found"; exit 0; fi;
         - which yum 2>/dev/null >/dev/null; if [ $? -gt 0 ]; then echo -e "Issue:\nyum not found"; exit 0; fi;
         - rpm -Uvh http://www.city-fan.org/ftp/contrib/yum-repo/rhel7/x86_64/city-fan.org-release-3-6.rhel7.noarch.rpm 2>/dev/null >/dev/null; if [ $? -gt 0 ]; then echo -e "Issue:\ncity-fan.org repo already installed"; exit 0; fi;
